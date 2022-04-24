@@ -1,0 +1,18 @@
+Need:
+1. Compare <major> version
+2. If <major> is same, compare <minor>
+3. If <major> and <minor> are same, compare <patch>
+4. If <major> and <patch> are present, <minor> also present.
+5. If <major> is same, sort ascending per length (ie, shortest first)
+
+def solution(l):
+    l.sort(key=lambda s: map(int, s.split('.')))
+    return(l)
+
+def solution(l):
+    l.sort(key=lambda s: [int(u) for u in s.split('.')])
+    return(l)
+
+# Driver Code
+l = ["1.11", "2.0.0", "1.2", "2", "0.1", "1.2.1", "1.1.1", "2.0",]
+solution(l)

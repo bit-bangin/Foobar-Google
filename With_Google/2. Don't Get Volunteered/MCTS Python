@@ -1,0 +1,118 @@
+def Monte Carlo Tree Search (MCTS):
+    """
+    Widely used algorithm in game theory, making decisions based on policy
+    updates devised by the tree with each iteration.
+    """
+Advantageous:
+ MCTS can effectively operate without knowledge in a particular domain.
+
+Stages (per iteration):
+1. Selecting
+2. Expanding
+3. Rollout
+4. Backpropagating
+
+def Upper Confidence Bound (UCB):
+    """
+    Defined as the factor deciding which node to evaluate next. Essentially
+    optimizes propability of vicotry from the given (present) game state.
+    """
+    Factors:
+    1. Exploitation
+    2. Exploration
+
+    Equation:
+    A(sub-t) = argmax(sub-a)(Qt(a) + c √in(t)/n(sub-t)(a))
+        - Qt(a) - Measure of success of an action (a) if selected (Exploitation)
+        - Nt(a) - Num of times an action (a) has been taken
+            - If low - UCB = high, and algorithm will provide (a) (explore)
+        - c - Exploration constant (frequency), impacts computational used
+    UCB = V + 2 *  √(ln N/ni)
+        - V = winning score of CURRENT node
+        - N = num of times parent visited
+        - ni = num of times child visited
+
+import time
+import os
+from math import log
+from math import sqrt
+from math import e
+from math import inf
+
+class node():
+    def __init__(self):
+        """
+        State - Current position of board
+        Children - Set of possible states from legal action from current node.
+        Parent - Parent node to current node.
+        N - Number of times parent node visited
+        n - Number of times current node visited
+        v - Exploitation factor of current node.
+        """
+        self.state =
+        self.children =
+        self.N = 0
+        self.n = 0
+        self.v = 0
+    def __main__():
+        board =
+        moves =
+***********
+
+def selection(curr_node):
+    """
+    Selection:
+    Iterate through all child nodes of given state, select highest UCB values.
+    """
+    max_ucb = -inf
+    selected_child = None
+    for i in curr_node.children:
+        curr_ucb = ucb_value(i)
+        if (curr_ucb > max_ucb):
+            max_ucb = curr_ucb
+            selected_child = i
+    return(selected_child)
+
+def expansion(curr_node):
+    """
+    Expansion:
+    Continue calling child w maximum priority, until reaching current leaf node.
+    """
+    if (curr_node.children.empty()):
+        return curr_node
+        # Leaf node has been reached.
+    max_ucb = -inf
+    selected_child = None
+    for i in curr_node.children:
+        curr_ucb = ucb_value(i)
+        selected_child = i
+    return expansion(selected_child)
+
+def rollout(curr_node):
+    """
+    Rollout:
+    Make random moves from the node received from expansion(), until end of
+    game (return leaf node).
+    """
+    if (curr_node.game_over()):
+        if (won):
+            return (1, curr_node)
+        elif (lose):
+            return (-1, curr_node)
+        else:
+            return (0.5, curr_node)
+    curr_node.children = generate_all_states(curr_node)
+    random_child = random.choice(curr_node.children)
+    return rollout(random_child)
+
+def backpropogation(curr_node, reward):
+    """
+    Backpropogation:
+    Upon receipt of final node and reward from fx rollout(), traverse that
+    reward until root of tree reached (resulting in update of UCB value of each
+    node in the path.)
+    """
+    while (curr_node.parent != None):
+        curr_node.v += reward
+        curr_node = curr_node.parent
+    return curr_node

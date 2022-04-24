@@ -1,0 +1,41 @@
+from collections import deque
+
+def solution(map):
+# [0, 1, 1, 0]   2
+# [0, 0, 0, 1]   1
+# [1, 1, 0, 0]   2
+# [1, 1, 1, 0]   3
+    # 7 (Not removing any walls)
+
+# [0, 0, 0, 0, 0, 0]  0
+# [1, 1, 1, 1, 1, 0]  5
+# [0, 0, 0, 0, 0, 0]  0
+# [0, 1, 1, 1, 1, 1]  5
+# [0, 1, 1, 1, 1, 1]  5
+# [0, 0, 0, 0, 0, 0]  0
+    # 11 (Removing 1 Wall.)
+    def bfs(x, y, map):
+        graph = [[None for i in range(c)] for j in range(r)]
+        q = deque([[x, y]])
+        graph[x][y] = 1
+        while q:
+            u, v = q.popleft()
+            for i, j in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                a, b = u + i, v + j
+                if 0 <= a < row and 0 <= b < col and graph[a][b] is None:
+                    graph[a][b] = graph[u][v] + 1
+                    if map[a][b] != 1:
+                        q.append((a, b))
+        return graph
+
+    row = len(map)
+    col = len(map[0])
+
+    start_end =  bfs(0, 0, map)
+    end_start = bfs(row - 1, col - 1, map)
+    result = 999
+    for i in range(row):
+        for j in range(col):
+            if start_end[i][j] and end_start[i][j]:
+                result  = min(result, start_end[i][j] + end_start[i][j] - 1)
+    return result
