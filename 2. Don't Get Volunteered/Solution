@@ -1,0 +1,149 @@
+import math
+import Queue
+class Queue:
+    def __init__(self, size):
+        if size < 1:
+            size = 1
+        self.data = [None for i in range(size)]
+        self.start_index = 0
+        self.length = 0
+
+    def empty(self):
+        return self.length == 0
+
+    def put(self, item):
+        self.data.append(item)
+        if self.length >= len(self.data):
+            self.resize()
+
+        self.data[self.modulo(self.start_index + self.length, len(self.data))] = item
+        self.length += 1
+
+    def get(self):
+        item = self.data[self.start_index]
+        self.start_index = self.modulo(self.start_index + 1, len(self.data))
+        self.length -= 1
+        return item
+
+    def resize(self):
+        new_data = [None for i in range(len(self.data * 2))]
+        for i in range(self.length):
+            new_data[i] = self.data[(self.start_index + i) % len(self.data)]
+
+        self.data = new_data
+        self.start_index = 0
+
+    def modulo(self, val, base):
+        if base == 0:
+            return val
+        return val % base
+
+def generate_all_knight_moves(src, board_size):
+    def is_move_valid(move):
+        return move[0] >= 0 and move[1] >= 0 \
+                and move[0] < board_size[0] and move[1] < board_size[1]
+
+    move = (src[0] + 2, src[1] + 1)
+    if is_move_valid(move):
+        yield move
+    move = (src[0] + 2, src[1] - 1)
+    if is_move_valid(move):
+        yield move
+    move = (src[0] - 2, src[1] + 1)
+    if is_move_valid(move):
+        yield move
+    move = (src[0] - 2, src[1] - 1)
+    if is_move_valid(move):
+        yield move
+    move = (src[0] + 1, src[1] + 2)
+    if is_move_valid(move):
+        yield move
+    move = (src[0] - 1, src[1] + 2)
+    if is_move_valid(move):
+        yield move
+    move = (src[0] + 1, src[1] - 2)
+    if is_move_valid(move):
+        yield move
+    move = (src[0] - 1, src[1] - 2)
+    if is_move_valid(move):
+        yield move
+
+def solution(src, dest):
+    # (x, y, distance_from_the_beginning)
+    src = (src % 8, src // 8, 0)
+    dest = (dest % 8, dest // 8, 0)
+
+    visited_nodes = set()
+    q = Queue(8)
+    q.put(src)
+
+    # do bfs search
+    while not q.empty():
+        item = q.get()
+        visited_nodes.add((item[0], item[1]))
+        if item[0] == dest[0] and item[1] == dest[1]:
+            return item[2]
+
+        for move in generate_all_knight_moves(item, (8, 8)):
+            if not move in visited_nodes:
+                # increment the distance here
+                q.put((move[0], move[1], item[2] + 1))
+
+    # there is no path
+    return -1
+
+if __name__ == '__main__':
+    print(solution(0, 1))
+    print(solution(19, 36))
+
+
+********************************************************************************
+********************************************************************************
+FACTORIALS
+The factorial of a natural number (n), is the product of all natural numbers
+less than or equal to (n).
+{n! = n * (n-1) * (n-2) * (n-3) * .... * 3 * 2 * 1}
+{6! = 6 * 5 * 4 * 3 * 2 * 1}
+{6! = 720}
+********
+Factorials - Recursively
+{6! = f(6)}
+f(6) = 6 * f(5)
+f(5) = 5 * f(4) -- f(6) = 6 * 5 * f(4)
+f(4) = 4 * f(3) -- f(6) = 6 * 5 * 4 * f(3)
+f(3) = 3 * f(2) -- f(6) = 6 * 5 * 4 * 3 * f(2)
+f(2) = 2 * f(1) -- f(6) = 6 * 5 * 4 * 3 * 2 * f(1)
+f(1) = 1        -- f(6) = 6 * 5 * 4 * 3 * 2 * 1
+********
+Python Implementation
+def recursive_factorial_fx(n):
+    """
+    Accepts imput (n), returns n multiplied by fx(n-1). Repeats (returns),
+    until input is equal to 1. Upon input = 1, return 1, terminate recursion.
+    Input must be natural numbers or 0.
+    """
+    if n <= 1:
+        # Adjustment to handle n = 0, given 0! = 1.
+        return 1
+    else:
+        return n*recursive_factorial_fx(n-1)
+********************************************************************************
+********************************************************************************
+Memoization - essentailly caching values/functions
+def factorial(input_value):
+    if input_value < 2:
+        return 1
+    elif input_value >= 2:
+        return input_value * factorial(input_value-1)
+## Performance Optimized
+from functools import lru_cache
+@lru_cache (maxsize = 1000)
+def factorial(input_value):
+    if input_value < 2:
+        return 1
+    elif input_value >= 2:
+        return input_value * factorial(input_value-1)
+for i in range(1, 5000):
+    print(f"{i}! = ", factorial(i))
+********************************************************************************
+********************************************************************************

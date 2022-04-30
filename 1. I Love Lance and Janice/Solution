@@ -1,0 +1,24 @@
+every lowercase letter [a..z] is replaced with the corresponding one
+in [z..a], while every other character (including uppercase letters
+and punctuation) is left untouched.
+That is, 'a' becomes 'z', 'b' becomes 'y', 'c' becomes 'x', etc.
+For instance, the word ""vmxibkgrlm"", when decoded, would become
+""encryption"".
+
+every lowercase letter [a..z] is replaced with the corresponding one
+in [z..a]
+
+def decrypt_sol(x):
+    lc_forw = [i for i in range(97, 123)]
+    lc_rev = [j for j in range(122, 96, -1)]
+    dict_lc = {lc_forw[n]: lc_rev[n] for n in range(len(lc_forw))}
+
+    solut = []
+
+    for y in x:
+        if dict_lc.has_key(ord(y)):
+            solut.append(chr(dict_lc[ord(y)]))
+        else:
+            solut.append(y)
+
+    return ''.join(solut)
