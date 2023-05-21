@@ -1,4 +1,4 @@
-# Google Foo Bar
+# Google's Foobar Challenge
 <html>
 <p>
   Welcome to the repository for my experience with Google's FooBar Challenge. I used Python to successfully complete the five levels of the semi-secret coding test.
